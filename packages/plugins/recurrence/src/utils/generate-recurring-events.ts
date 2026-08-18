@@ -4,7 +4,7 @@ import { overlapsRange, safeDate } from '@ilamy/utils/helpers'
 import { RRule } from 'rrule'
 import type { RRuleOptions } from '../types'
 import { fromFloatingDate, toFloatingDate } from './floating-time'
-import { getEventParentUID } from './series-helpers'
+import { getEventParentUID, getOccurrenceStartISO } from './series-helpers'
 
 interface GenerateRecurringEventsProps {
 	event: CalendarEvent
@@ -94,7 +94,7 @@ export const generateRecurringEvents = ({
 			})
 			.filter((recurringEvent) => {
 				// Filter out EXDATE exclusions
-				const eventStartISO = recurringEvent.start.toISOString()
+				const eventStartISO = getOccurrenceStartISO(recurringEvent)
 				const isExcluded = event.exdates?.includes(eventStartISO) ?? false
 				if (isExcluded) {
 					return false
